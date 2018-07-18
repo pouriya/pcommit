@@ -154,7 +154,7 @@ class ChangeLog(CommitsParser):
 
 class MarkDownChangeLogGenerator(ChangeLog):
 
-	FILE_NAME = "changelog.md"
+	FILE_NAME = "CHANGELOG.md"
 
 	def __init__(self
                 ,since=None
