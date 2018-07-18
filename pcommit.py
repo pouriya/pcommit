@@ -253,7 +253,7 @@ class MarkDownChangeLogGenerator(ChangeLog):
 
 
 	def handle_end_of_commits(self):
-		self.fd.write("\nGenerated at {}".format(strftime('%Y-%m-%d %H:%M', localtime())))
+		self.fd.write("\nGenerated at {}\n".format(strftime('%Y-%m-%d %H:%M', localtime())))
 		self.fd.close()
 
 
@@ -350,7 +350,7 @@ def run_command(command):
 	try:
 		return check_output(command)
 	except Exception as error:
-		print("\nError: could not run command {!r} because of {}\n".format(" ".join(command), error))
+		print("\nError: could not run command {!r} because of\n\t {}\n".format(" ".join(command), error))
 		exit(1)
 
 
