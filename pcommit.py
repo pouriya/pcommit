@@ -275,26 +275,26 @@ class CommitChanges:
 
 	def get_type(self):
 		while True:
-			text = raw_input("Insert commit type {}:".format(tuple(COMMIT_TYPES)))
+			text = raw_input("Insert commit type {}: ".format(tuple(COMMIT_TYPES)))
 			if text in COMMIT_TYPES:
 				return text
 
 
 	def get_short_description(self):
 		while True:
-			text = raw_input("Insert commit main description (between 10-65 characters):")
+			text = raw_input("Insert commit main description (between 10-65 characters): ")
 			if len(text) <= 65:
 				return text
 
 
 	def get_files(self):
-		text = raw_input("Insert changed files separated by comma (Enter to skip):")
+		text = raw_input("Insert changed files separated by comma (Enter to skip): ")
 		if text.strip():
 			return text
 		return
 
 	def get_long_description(self):
-		text = raw_input("Insert commit long description (Enter to skip):")
+		text = raw_input("Insert commit long description (Enter to skip): ")
 		if text.strip():
 			return text
 		return
