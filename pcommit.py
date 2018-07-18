@@ -316,7 +316,7 @@ class Commit:
 		parsed_text = text.split(":", 1)
 		commit_type = parsed_text[0]
 		if commit_type not in COMMIT_TYPES:
-			raise TypeError("unknown commit type {!r} in {!r}".format(commit_type, self.text))
+			raise TypeError("Warning: unknown commit type {!r} in {!r}".format(commit_type, self.text))
 		return (commit_type.strip(), parsed_text[1])
 
 
@@ -350,7 +350,7 @@ def run_command(command):
 	try:
 		return check_output(command)
 	except Exception as error:
-		print("could not run command {!r} because of {}".format(" ".join(command), error))
+		print("\nError: could not run command {!r} because of {}\n".format(" ".join(command), error))
 		exit(1)
 
 
