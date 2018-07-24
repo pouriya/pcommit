@@ -14,6 +14,7 @@ else:
 
 
 __author__ = "Pouriya Jahanbakhsh"
+__version__ = "18.7.24"
 
 
 global INIT_TYPE
