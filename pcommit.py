@@ -67,8 +67,8 @@ class CommitsParser:
 
 
 	def get_commit_lines(self):
-		output  = run_command(["git", "log", "--oneline"])
-#		output  = run_command(["cat", "commits.log"]) # For test
+		output  = run_command("git log --oneline")
+#		output  = run_command("cat commits.log") # For test
 		lines = []
 		for line in output.splitlines():
 			lines.append(line.split(" ", 1)[1]) # skip commit hash
@@ -90,8 +90,9 @@ class CommitsParser:
 
 
 	def save_commits(self, commits):
-		data = {1: [None, []]}
 		number = 1
+		data = {number: [None, []]}
+		commits.reverse()
 		for commit in commits:
 			if commit.type != VERSION_TYPE:
 				data[number][1].append(commit)
@@ -101,7 +102,6 @@ class CommitsParser:
 	
 				number += 1
 				data[number] = [None, []]
-		
 		self.commits = []
 		index = 1
 		while index <= number:
@@ -137,7 +137,6 @@ class ChangeLog(CommitsParser):
 		commit_lines = self.get_commit_lines()
 		commits      = self.parse_commits(commit_lines)
 		self.save_commits(commits)
-
 		if self.since:
 			run_callback = False
 		else:
@@ -191,7 +190,7 @@ class MarkDownChangeLogGenerator(ChangeLog):
 		
 
 	def handle_commits(self, version, commits):
-		self.fd.write("### {}\n".format(version))
+		self.fd.write("### {}\r\n".format(version))
 		fix = []
 		feat = []
 		ref = []
@@ -207,53 +206,53 @@ class MarkDownChangeLogGenerator(ChangeLog):
 				test.append(commit)
 
 		if self.include_fix and fix:
-			self.fd.write("* **Fix(es):**\n")
+			self.fd.write("* **Fix(es):**\r\n")
 			for commit in fix:
-				self.fd.write("    * {}  \n".format(commit.short_description))
+				self.fd.write("    * {}  \r\n".format(commit.short_description))
 				if self.fix_include_long_description and commit.long_description:
-					self.fd.write("        >{}  \n\n".format(commit.long_description))
+					self.fd.write("        >{}  \r\n\r\n".format(commit.long_description))
 				if self.fix_include_files and commit.files:
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
 		if self.include_feat and feat:
-			self.fd.write("* **Feature(s):**\n")
+			self.fd.write("* **Feature(s):**\r\n")
 			for commit in feat:
-				self.fd.write("    * {}  \n".format(commit.short_description))
+				self.fd.write("    * {}  \r\n".format(commit.short_description))
 				if self.feat_include_long_description and commit.long_description:
-					self.fd.write("        >{}  \n\n".format(commit.long_description))
+					self.fd.write("        >{}  \r\n\r\n".format(commit.long_description))
 				if self.feat_include_files and commit.files:
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
 		if self.include_ref and ref:
-			self.fd.write("* **Refactor(s):**\n")
+			self.fd.write("* **Refactor(s):**\r\n")
 			for commit in ref:
-				self.fd.write("    * {}  \n".format(commit.short_description))
+				self.fd.write("    * {}  \r\n".format(commit.short_description))
 				if self.ref_include_long_description and commit.long_description:
-					self.fd.write("        >{}  \n\n".format(commit.long_description))
+					self.fd.write("        >{}  \r\n\r\n".format(commit.long_description))
 				if self.ref_include_files and commit.files:
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
 		if self.include_test and test:
-			self.fd.write("* **Test improvment(s):**\n")
+			self.fd.write("* **Test improvment(s):**\r\n")
 			for commit in test:
-				self.fd.write("    * {}  \n".format(commit.short_description))
+				self.fd.write("    * {}  \r\n".format(commit.short_description))
 				if self.test_include_long_description and commit.long_description:
-					self.fd.write("        >{}  \n\n".format(commit.long_description))
+					self.fd.write("        >{}  \r\n\r\n".format(commit.long_description))
 				if self.test_include_files and commit.files:
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
 
 
 	def handle_end_of_commits(self):
-		self.fd.write("\nGenerated at {}\n".format(strftime('%Y-%m-%d %H:%M', localtime())))
+		self.fd.write("\r\nGenerated at {}\r\n".format(strftime('%Y-%m-%d %H:%M', localtime())))
 		self.fd.close()
 
 
@@ -270,7 +269,8 @@ class CommitChanges:
 			commit += "\nFiles: {}".format(self.files)
 		if self.long_description:
 			commit += "\n{}".format(self.long_description)
-		run_command(["git", "commit", "-m", commit])
+		print(commit)
+		run_command("git commit -m {!r}".format(commit))
 
 
 	def get_type(self):
@@ -283,7 +283,7 @@ class CommitChanges:
 	def get_short_description(self):
 		while True:
 			text = raw_input("Insert commit main description (between 10-65 characters): ")
-			if len(text) <= 65:
+			if 1 <= len(text) <= 65:
 				return text
 
 
@@ -348,9 +348,9 @@ class Commit:
 
 def run_command(command):
 	try:
-		return check_output(command)
+		return check_output(command, shell=True)
 	except Exception as error:
-		print("\nError: could not run command {!r} because of\n\t {}\n".format(" ".join(command), error))
+		print("\nError: could not run command {!r} because of\n\t {}\n".format(command, error))
 		exit(1)
 
 
