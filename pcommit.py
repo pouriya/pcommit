@@ -269,7 +269,6 @@ class CommitChanges:
 			commit += "\nFiles: {}".format(self.files)
 		if self.long_description:
 			commit += "\n{}".format(self.long_description)
-		print(commit)
 		run_command("git commit -m {!r}".format(commit))
 
 
@@ -350,7 +349,7 @@ def run_command(command):
 	try:
 		return check_output(command, shell=True)
 	except Exception as error:
-		print("\nError: could not run command {!r} because of\n\t {}\n".format(command, error))
+		print("\nError: could not run command:\n\t {!r} because of\n\t {}\n".format(command, error))
 		exit(1)
 
 
