@@ -207,40 +207,40 @@ class MarkDownChangeLogGenerator(ChangeLog):
 				test.append(commit)
 
 		if self.include_fix and fix:
-			self.fd.write("* **Fix(es):**\r\n")
+			self.fd.write("* **Fix(es):**\r\n\r\n")
 			for commit in fix:
-				self.fd.write("    * {}  \r\n".format(commit.short_description))
+				self.fd.write("    * {}  \r\n\r\n".format(commit.short_description))
 				if self.fix_include_long_description and commit.long_description:
 					self.fd.write("        >{}  \r\n\r\n".format(commit.long_description))
 				if self.fix_include_files and commit.files:
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n\r\n".format(files[2:]))
 		if self.include_feat and feat:
-			self.fd.write("* **Feature(s):**\r\n")
+			self.fd.write("* **Feature(s):**\r\n\r\n")
 			for commit in feat:
-				self.fd.write("    * {}  \r\n".format(commit.short_description))
+				self.fd.write("    * {}  \r\n\r\n".format(commit.short_description))
 				if self.feat_include_long_description and commit.long_description:
 					self.fd.write("        >{}  \r\n\r\n".format(commit.long_description))
 				if self.feat_include_files and commit.files:
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n\r\n".format(files[2:]))
 		if self.include_ref and ref:
-			self.fd.write("* **Refactor(s):**\r\n")
+			self.fd.write("* **Refactor(s):**\r\n\r\n")
 			for commit in ref:
-				self.fd.write("    * {}  \r\n".format(commit.short_description))
+				self.fd.write("    * {}  \r\n\r\n".format(commit.short_description))
 				if self.ref_include_long_description and commit.long_description:
 					self.fd.write("        >{}  \r\n\r\n".format(commit.long_description))
 				if self.ref_include_files and commit.files:
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n\r\n".format(files[2:]))
 		if self.include_test and test:
-			self.fd.write("* **Test improvment(s):**\r\n")
+			self.fd.write("* **Test improvment(s):**\r\n\r\n")
 			for commit in test:
 				self.fd.write("    * {}  \r\n".format(commit.short_description))
 				if self.test_include_long_description and commit.long_description:
@@ -249,11 +249,11 @@ class MarkDownChangeLogGenerator(ChangeLog):
 					files = ""
 					for file in commit.files:
 						files += ", {}".format(file)
-					self.fd.write("        Files changed: {}  \r\n".format(files[2:]))
+					self.fd.write("        Files changed: {}  \r\n\r\n".format(files[2:]))
 
 
 	def handle_end_of_commits(self):
-		self.fd.write("\r\nGenerated at {}\r\n".format(strftime('%Y-%m-%d %H:%M', localtime())))
+		self.fd.write("Generated at {}\r\n".format(strftime('%Y-%m-%d %H:%M', localtime())))
 		self.fd.close()
 
 
